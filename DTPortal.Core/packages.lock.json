@@ -206,7 +206,7 @@
           "Fido2.Models": "2.0.2",
           "NSec.Cryptography": "20.2.0",
           "Newtonsoft.Json": "12.0.3",
-          "PeterO.Cbor": "4.1.3",
+          "PeterO.Cbor": "4.5.1",
           "System.IdentityModel.Tokens.Jwt": "6.6.0",
           "System.Memory": "4.5.4",
           "System.Security.Cryptography.Cng": "4.7.0"
@@ -640,7 +640,7 @@
       },
       "PeterO.Cbor": {
         "type": "Transitive",
-        "resolved": "4.1.3",
+        "resolved": "4.5.1",
         "contentHash": "+rEfHPsppHqjBTPeDvHUj7KMFrIPbu7TO7QC6s/lFumbFZqJbAUfQkHic2LEW76GX5XNk8aUhwHT/neHwhz2pw==",
         "dependencies": {
           "PeterO.Numbers": "1.6.0",
@@ -860,10 +860,10 @@
       },
       "System.Windows.Extensions": {
         "type": "Transitive",
-        "resolved": "5.0.0",
+        "resolved": "5.0.3",
         "contentHash": "c1ho9WU9ZxMZawML+ssPKZfdnrg/OjR3pe0m9v8230z3acqphwvPJqzAkH54xRYm5ntZHGG1EPP3sux9H3qSPg==",
         "dependencies": {
-          "System.Drawing.Common": "5.0.0"
+          "System.Drawing.Common": "5.0.3"
         }
       },
       "dtportal.common": {
