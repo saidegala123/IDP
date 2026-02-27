@@ -19,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using NLog;
 using NLog.Web;
 using StackExchange.Redis;
@@ -163,7 +164,8 @@ async Task ConfigureServices(WebApplicationBuilder builder)
             ["ConnectionStrings:IDPConnString"] = data["ConnectionStrings:IDPConnString"]?.ToString(),
             ["ConnectionStrings:RAConnString"] = data["ConnectionStrings:RAConnString"]?.ToString(),
             ["ConnectionStrings:PKIConnString"] = data["ConnectionStrings:PKIConnString"]?.ToString(),
-            ["RedisConnString"] = data["RedisConnString"]?.ToString()
+            ["RedisConnString"] = data["RedisConnString"]?.ToString(),
+            ["JWTConfig"] = data["JWTConfig"]?.ToString(),
         };
 
         // Inject Vault secrets into configuration
@@ -178,6 +180,7 @@ async Task ConfigureServices(WebApplicationBuilder builder)
     var raConnectionString = builder.Configuration.GetConnectionString("RAConnString");
     var pkiConnectionString = builder.Configuration.GetConnectionString("PKIConnString");
     var redisConn = builder.Configuration["RedisConnString"];
+    var jwtConfig = builder.Configuration["JWTConfig"];
 
 
     //logger.Info("IDP Database ConnString: " + idpConnectionString);
@@ -208,8 +211,9 @@ async Task ConfigureServices(WebApplicationBuilder builder)
     }
 
     // Get JWT Token Configuration
-    var jwtConfig = builder.Configuration.GetSection("JWTConfig").Get<JWTConfig>();
-    builder.Services.AddSingleton(jwtConfig);
+    //var jwtConfig = builder.Configuration.GetSection("JWTConfig").Get<JWTConfig>();
+    var jwtConfigDeserialized = JsonConvert.DeserializeObject<JWTConfig>(jwtConfig);
+    builder.Services.AddSingleton(jwtConfigDeserialized);
 
     builder.Services.AddCors();
     builder.Services.AddTransient<ICorsPolicyProvider, CustomCorsPolicyProvider>();

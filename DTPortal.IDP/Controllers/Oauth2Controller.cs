@@ -946,7 +946,7 @@ namespace DTPortal.IDP.Controllers
                         var url = model.clientDetails.redirect_uri + "?error=Internal_Error" +
                             "&error_description=" + response.Message +
                             "&state=" + model.clientDetails.state;
-                        return Redirect(url);
+                        return LocalRedirect(url);
                     }
                     else
                     {
