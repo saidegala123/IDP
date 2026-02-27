@@ -1,0 +1,512 @@
+﻿@using Microsoft.AspNetCore.Html
+@model DTPortal.IDP.ViewModel.Login.LoginViewModel
+@using System.Text.Json
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+
+
+@{
+    ViewData["Title"] = "Login";
+    var name = Configuration["ProjectName"];
+}
+
+<link rel="stylesheet" href="~/assets/@name/appcss/LoginPage.css">
+
+
+<div id="overlay">
+    <div class="cv-spinner">
+        <span class="spinner">
+
+        </span>
+    </div>
+</div>
+<div id="overlay2">
+    <div class="cv-spinner">
+        <span class="spinner">
+
+        </span>
+    </div>
+</div>
+@* <div id="networkOverlay" style="position: fixed; top: 0; z-index: 100000; width: 100%; height: 100%; background-color:rgba(0,0,0,0.3);">
+<div class="cv-spinner">
+    <span class="spinner">
+
+    </span>
+</div>
+</div> *@
+<div id="overlay1">
+</div>
+<section class="myform-area" style=" background-image: url('assets/@name/NewLogo/PNG/UaeBackground.png');">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="form-area login-form" style="background-image: linear-gradient(to left bottom, rgba(255,255,255,1) 20%, rgba(255,255,255,0.4) 20%),url('assets/@name/NewLogo/SVG/Gr.svg');">
+                    <div class="form-content d-flex align-items-center">
+                        <img class="icon-img" src="~/assets/@name/NewLogo/PNG/UaeLogo.png" />
+                    </div>
+                    <div class="form-input" id="USER">
+                        <h1>Sign in</h1>
+                        <form action="" method="POST" id="UserForm" novalidate>
+                            <div>
+                                <p id="USERerror" class="danger" @*style="display: block;"*@>
+
+                                    @if (Model.error != null)
+                                    {
+                                        @Model.error
+                                    }
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="username" name="username" required />
+                                <label>Email / Mobile Number</label>
+                            </div>
+                            <div class="myform-button">
+                                <button class="myform-btn" type="button" id="checkUser">Next</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="form-input" id="PASSWORD" style="display:none;">
+                        <h1>Sign in</h1>
+                        <form action="" method="POST" id="PASSWORDForm" novalidate>
+                            <div>
+                                <p id="PASSWORDerror" class="info" style="visibility: hidden;">
+
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="PASSWORDuserName" name="username" readonly />
+                                <input id="PASSWORDauthScheme" name="authScheme" type="hidden" value="PASSWORD">
+                            </div>
+                            <div class="form-group" id="pwd">
+                                <div class="input-box">
+                                    <input class="pwd" type="text" id="password" name="password" required />
+                                    <label>Password</label>
+                                    <span toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                </div>
+                            </div>
+                            <div class="myform-button">
+                                <button class="myform-btn" type="button" id="checkPassword">Submit</button>
+                                <div class="loginSignUpSeparator "><span class="textInSeparator">OR</span></div>
+                                <a href="#" id="forgotPassword" onclick="ForgotPassword();">Forgot Password</a>
+                            </div>
+
+                            <div class="myform-button">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="form-input" id="QRCODE" style="display:none;padding:25px;">
+                        <h1>Sign in</h1>
+                        <form action="" method="POST" id="QRCODEForm" novalidate>
+                            <div>
+                                <p id="QRCODEerror" class="info" style="visibility: hidden;"></p>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="QRCODEuserName" name="username" readonly />
+                                <div id="QRCODEdata" class="qr-container"></div>
+                                <!-- Instructions placed here -->
+                                @* <p class="qr-instructions" style="color: white; font-size: 14px; margin-top: 10px;">
+                                To sign in, scan this QR code with your registered mobile authentication app. If you don’t have the app, please download it from the iOS or Android QR codes provided below.
+                                </p> *@
+                                <div class="info-details">
+
+                                    @* <span class="info-title">Check&nbsp; <img class="info-logo-img" src="~/assets/NewLogo/PNG/UaeidLogo.png" /> Mobile Application</span> *@
+                                    <span class="infoMSG">
+                                        To sign in, Open your<img class="info-logo-img" src="~/assets/@name/NewLogo/PNG/UaeidLogo.png" />app. Go to Document Vault and Click on Scan QR Code and Scan the QR
+                                    </span>
+                                </div>
+                                <input id="QRCODEauthScheme" name="authScheme" type="hidden" value="QRCODE">
+                            </div>
+                            <div class="myform-button"></div>
+                        </form>
+                    </div>
+                    <div class="form-input" id="PUSH_NOTIFICATION" style="display:none;">
+                        <h1>Sign in</h1>
+                        <form action="" method="POST" id="PUSH_NOTIFICATIONForm" novalidate>
+                            <div>
+                                <p id="PUSH_NOTIFICATIONerror" class="info" style="visibility: hidden;">
+
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="PUSH_NOTIFICATIONuserName" name="username" readonly />
+                                <input id="PASSWORDauthScheme" name="authScheme" type="hidden" value="PASSWORD">
+                            </div>
+                            <div class="pushNotificationDiv">
+
+                                <div id="timerDiv">Resend code in <span id="timer">00</span> sec</div>
+                                <span class="NotificationCode" id="PushNotificationCode"></span>
+
+                            </div>
+
+                            <div class="info-details">
+
+                                <span class="info-title">Check&nbsp; <img class="info-logo-img" src="~/assets/@name/NewLogo/PNG/UaeidLogo.png" /> Mobile Application</span>
+                                <span class="infoMSG">
+                                    Select the above displayed number to sign in
+                                </span>
+                            </div>
+                            <br/>
+                            <br />
+                      @*       <div class="text-center mt-2">
+                                <a href="javascript:void(0);" onclick="showOptions()" class="text-primary" style="text-decoration: underline;">
+                                    Try Another Way
+                                </a>
+                            </div> *@
+
+                        </form>
+                    </div>
+                    <div class="form-input" id="FIDO2" style="display:none;">
+                        <h1>Sign in</h1>
+                        <form action="" method="POST" id="FIDO2Form" novalidate>
+                            <div>
+                                <p id="FIDO2error" class="danger hide" @*style="display: block;"*@>
+
+                                    @*@if (Model.error != null)
+                                    {
+                                    @Model.error
+                                    }*@
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="FIDO2userName" name="userName" readonly />
+                                <input type="hidden" id="FIDOOption" name="FIDOOption" />
+                            </div>
+                            <div class="myform-button" style="display: flex;justify-content: center;margin-top: 30px;">
+                                <button class="myform-btn" type="submit" id="registerBtn">Next</button>
+                                <button class="myform-btn" type="button" id="cancle"
+                                        style="background-color: #a29595;margin-left: 1vh;display: none">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="form-input" id="MOBILE_TOTP" style="display:none;">
+                        <h1>Sign in</h1>
+                        <form action="" method="POST" id="MOBILE_TOTPForm" novalidate>
+                            <div>
+                                <p id="MOBILE_TOTPerror" class="info" style="visibility: hidden;">
+
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="MOBILE_TOTPuserName" name="username" readonly />
+                                <input id="PASSWORDauthScheme" name="authScheme" type="hidden" value="PASSWORD">
+                            </div>
+                            <div class="pushNotificationDiv" style="visibility:hidden;">
+
+                                <div>Resend code in <span>00</span> sec</div>
+                                <span class="NotificationCode"></span>
+
+                            </div>
+                            <div class="info-details">
+
+                                <span class="info-title">Check&nbsp; <img class="info-logo-img" src="~/assets/@name/NewLogo/PNG/UaeidLogo.png" /> Mobile Application</span>
+                                <span class="infoMSG">
+                                    Approve authentication request for sign in
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="form-input" id="TOTP" style="display:none;">
+                        <h1>Sign in</h1>
+                        <form action="" method="POST" id="TOTPForm" novalidate>
+                            <div>
+                                <p id="TOTPerror" class="info" style="visibility: hidden;">
+
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="TOTPuserName" name="username" readonly />
+                                <input id="TOTPauthScheme" name="authScheme" type="hidden" value="TOTP">
+                            </div>
+                            <div class="form-group" id="pwd">
+                                <div class="input-box">
+                                    <input type="password" id="totp" name="password" required />
+                                    <label id="totpType">TOTP</label>
+                                    @* <span toggle="#totp" class="toggle-password"></span> *@
+                                </div>
+                            </div>
+                            <div class="myform-button">
+                                <button class="myform-btn" type="button" id="checkTOTP">Submit</button>
+                            </div>
+                            <div class="myform-button">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="form-input" id="WEB_PIN" style="display:none;">
+                        <h1>Sign in</h1>
+                        <form action="" method="POST" id="WEB_PINForm" novalidate>
+                            <div>
+                                <p id="WEB_PINerror" class="info" style="visibility: hidden;">
+
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="WEB_PINuserName" name="username" readonly />
+                                <input id="WEB_PINauthScheme" name="authScheme" type="hidden" value="WEB_PIN">
+                            </div>
+                            <div class="form-group" id="pwd">
+                                <div class="input-box">
+                                    <input class="pwd" type="text" id="pin" name="password" required />
+                                    <label>Pin</label>
+                                    <span toggle="#pin" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                </div>
+                            </div>
+                            <div class="myform-button">
+                                <button class="myform-btn" type="button" id="checkPin">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="form-input" id="WEB_FACE" style="display:none">
+                        <h1 style="text-align:center;font-size: 200%;">Face Authentication</h1>
+                        <img style="display:none;margin-left:auto;margin-right:auto" id="camblock" src="~/assets/faceauth.png" height="200" width="200" />
+                        <div class="myform-button" style="display:none;margin-top:0" id="recapturediv">
+                            <button style="margin-left:auto;width:30%" class="myform-btn" type="button" id="recapture">Retry</button>
+                            <button style="margin-left:10%;margin-right:auto;width:30%" class="myform-btn" type="button" id="cancelface">Cancel</button>
+
+                        </div>
+
+
+
+                        <div class="loading" id="camload" style="position:absolute;margin-left:40%;margin-top:30%">
+                            @* <span class="loading__dot"></span>
+                            <span class="loading__dot"></span>
+                            <span class="loading__dot"></span> *@
+                            <span style="--i:1;"></span>
+                            <span style="--i:2;"></span>
+                            <span style="--i:3;"></span>
+                            <span style="--i:4;"></span>
+                            <span style="--i:5;"></span>
+                            <span style="--i:6;"></span>
+                            <span style="--i:7;"></span>
+                            <span style="--i:8;"></span>
+                            <span style="--i:9;"></span>
+                            <span style="--i:10;"></span>
+                            <span style="--i:11;"></span>
+                            <span style="--i:12;"></span>
+                            <span style="--i:13;"></span>
+                            <span style="--i:14;"></span>
+                            <span style="--i:15;"></span>
+                        </div>
+                        <div style="position:relative;">
+                            <video style="display:none;margin-bottom:5%" id="video" class="loading" width="309" height="233" autoplay muted></video>
+                            <img style="display:none;margin-bottom:5%" id="imagedisplay" src="" height="233" width="309" />
+                            <p id="faceinstructions" style="color:red;text-align:center;display:none">Please come closer!!!</p>
+
+                        </div>
+
+                    </div>
+                    <div class="row footer">
+                        <img src="~/assets/@name/NewLogo/PNG/UaePoweredby.png" class="left" />
+                        <img src="~/assets/@name/NewLogo/PNG/MytrustPoweredBy.png" class="right" />
+                    </div>
+                </div>
+
+            </div>
+            <!--new popup Model-->
+            <div class="modal">
+                <div class="modal-content">
+                    <div class="row closerdiv">
+                        <span class="close-button">×</span>
+                    </div>
+                    <div class="row jc-c GuiedlineHead">
+                        <h3>Registration Guidelines<h3>
+                    </div>
+                    <div class="row jc-c" id="appQrCode">
+                        <div class="col-6"><img src="~/assets/ios-qr.png" class="qr-code img-thumbnail img-responsive"><h4>IOS</h4></div>
+                        <div class="col-6"><img src="~/assets/android-qr.png" class="qr-code img-thumbnail img-responsive"><h4>Android</h4></div>
+                        @*<div class="row jc-c" id="appQrCode"><div class="col-6"><img src="data:image/png;base64,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" class="qr-code img-thumbnail img-responsive"><h4>IOS</h4></div>*@
+                        @*<div class="col-6"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABCQAAAQkCAYAAAClls8JAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAIABJREFUeJzs2luO5LpyQFHTyPlPmf4y3P1xGu4rnq3I4loDSAQfUhU2tPbe+78AAAAAQv/99gAAAADAfQQJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQ+7w9wLdba709Al9k7/32CH80/T5P37/TTp/H9P277f7ddr7T3XYe09drvp9t+v5N/3vELLc9v6f5QgIAAADICRIAAABATpAAAAAAcoIEAAAAkBMkAAAAgJwgAQAAAOQECQAAACAnSAAAAAA5QQIAAADICRIAAABATpAAAAAAcoIEAAAAkBMkAAAAgJwgAQAAAOQECQAAACAnSAAAAAA5QQIAAADICRIAAABATpAAAAAAcp+3B+B3e++3R+AXa623R+AX08/j9PM7/X1w23lMX+90p/dv+vMx3fTnY/p8p922f7c9v7etd7rp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AAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAILf23vvtIb7ZWuvtEfjF6evsfJ/xennmtvs3/b6cPo/p651u+nl4fn+26efrPPgb0+/L9POdvn/T+UICAAAAyAkSAAAAQE6QAAAAAHKCBAAAAJATJAAAAICcIAEAAADkBAkAAAAgJ0gAAAAAOUECAAAAyAkSAAAAQE6QAAAAAHKCBAAAAJATJAAAAICcIAEAAADkBAkAAAAgJ0gAAAAAOUECAAAAyAkSAAAAQE6QAAAAAHKftwfgd3vvt0fgF9PPY6119PeslzdNP9/p9+X0/vHMbffF/fvZpp/v6edt+np5Zvr7+Ta+kAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACA3OftAfjdWuvo7+29j/7eaafXe5vT5+s8eNNt76vT652+f9NNP9/p72f375nbznf6enlm+vuUWXwhAQAAAOQECQAAACAnSAAAAAA5QQIAAADICRIAAABATpAAAAAAcoIEAAAAkBMkAAAAgJwgAQAAAOQECQAAACAnSAAAAAA5QQIAAADICRIAAABATpAAAAAAcoIEAAAAkBMkAAAAgJwgAQAAAOQECQAAACAnSAAAAAC5tffebw8BzLDWenuEr3b6dTr9PPz5eOb0+TqPZzxvz7jPs0w/j+nP22nT7/P085h+/6af73S+kAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACA3OftAbjbWuvo7+29j/7e9PlOmz7faafP97b7Mn29p+fjmen35bTp93n6/k03/f1y2/0z36zfO23688YzvpAAAAAAcoIEAAAAkBMkAAAAgJwgAQAAAOQECQAAACAnSAAAAAA5QQIAAADICRIAAABATpAAAAAAcoIEAAAAkBMkAAAAgJwgAQAAAOQECQAAACAnSAAAAAA5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7RH+6PR8zuNnm36+p01f7/Tnd/p8/Gy33Zfpz5u/v8/Yv2em79/0+fjZfCEBAAAA5AQJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAICdIAAAAALm1995vD/HN1lpvj/BH04/39P7dtt7TTu+f8/3Zpp/HdNPvy23vg+nznTb9/k03/f6ddtt6+dmmv59v4wsJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAICdIAAAAADlBAgAAAMh93h7g2+293x6Bf9Fa6+jvnb4vp+e7jfN9xv79bLed7/S/57et9zTvg1mmvw9Ou22903mfzuILCQAAACAnSAAAAAA5QQIAAADICRIAAABATpAAAAAAcoIEAAAAkBMkAAAAgJwgAQAAAOQECQAAACAnSAAAAAA5QQIAAADICRIAAABATpAAAAAAcoIEAAAAkBMkAAAAgJwgAQAAAOQECQAAACAnSAAAAAA5QQIAAADIfd4egN+ttd4egV/svY/+3unzvW0+nnEez9i/WZzHM9Pf9+Z7xv+Ts0w/D/ePN/lCAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByn7cH+HZrraO/t/c++nunnV7vdLetd/r9O+30em97H/DMbe+X6aY/b9PfV8zivvAm94+/4QsJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAICdIAAAAADlBAgAAAMgJEgAAAEBOkAAAAAByggQAAACQEyQAAACAnCABAAAA5AQJAAAAICdIAAAAADlBAgAAAMh93h7g2+293x4hZb2zrLXeHiF1+jxO799t92X6edxm+v07bfp9mf68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" class="qr-code img-thumbnail img-responsive"><h4>Android</h4></div></div>*@
+                    </div>
+                    <div class="row jc-c">
+                        <ul class="step">
+                            <li>
+                                <span>1) Scan the above QR code To download device specific UAEID App </span>
+                            </li>
+
+                            <li>
+                                <span>2) Onboard yourself to UAEID App using National ID card or Passport </span>
+                            </li>
+
+                            <li>
+                                <span>3) Complete the onboarding step to register successfully.</span>
+                            </li>
+
+                            <li>
+                                <span>4) Login with UAEID to access UAEID Services.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row closerdiv">
+                        <button class="close-btn cls-btn3" type="button">Close</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal" id="activatesubscriber">
+                <div class="modal-content">
+                    <div class="row closerdiv">
+                        <span class="close-button cls-btn1">×</span>
+                    </div>
+                    <div class="row jc-c GuiedlineHead">
+                        <h3>Account Activation Guidelines</h3>
+                    </div>
+                    <div class="row jc-c">
+                        <ul class="step">
+                            <li>
+                                <span>1) Open UAEID Mobile Application.</span>
+                            </li>
+
+                            <li>
+                                <span>2) On dashboard page click on "Reset PIN". </span>
+                            </li>
+
+                            <li>
+                                <span>3) Click on "Reset Authentication PIN"</span>
+                            </li>
+
+                            <li>
+                                <span>4) Follow displayed verification process.</span>
+                            </li>
+
+                            <li>
+                                <span>5) After successfull verification,Account will be Unlocked.</span>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div class="row closerdiv">
+                        <button class="close-btn cls-btn2" type="button">Close</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal" id="authenticationmethods">
+                <div class="modal-content">
+                    <div class="row jc-c GuiedlineHead">
+                        <h3>Choose one of these methods to authenticate</h3>
+                    </div>
+                    <div class="authentication-boxes">
+                        <div class="auth-box large-font" onclick="AssistedAuthentication('WEB_FACE')">
+                            <div class="circle">
+                                <img src="~/assets/NewLogo/PNG/face_green.png" alt="Sample Image">
+                            </div>
+                            <div class="text-content">
+                                <div>FACE Authentication</div>
+                                <div class="auth-description small-font">Authenticate quickly and securely using face recognition technology</div>
+                            </div>
+                        </div>
+                        <div class="auth-box large-font" onclick="AssistedAuthentication('WEB_PIN')">
+                            <div class="circle">
+                                <img src="~/assets/NewLogo/PNG/pin_green.png" alt="Sample Image">
+                            </div>
+                            <div class="text-content">
+                                <div>PIN Authentication</div>
+                                <div class="auth-description small-font">Authenticate securely with your personal identification number </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal" id="authSchemaModal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="authSchemaModalLabel">Choose other Sign-In options</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div style="text-align: left; margin-top: 10px;">
+                            <label for="authSchemaSelect" style="font-weight: bold; display: block; margin-bottom: 5px;">
+                                Available Options:
+                            </label>
+                            <select id="authSchemaSelect" class="form-select">
+                                @foreach (var schema in Model.AuthSchemas)
+                                {
+                                    <option value="@schema.Key">@schema.Value</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="cancelAuthModalBtn" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="confirmAuthScheme">Continue</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Responsive Timeout Modal -->
+            <!-- Responsive Timeout Modal (hidden by default) -->
+            <div class="custom-timeout-modal" id="customTimeoutModal" tabindex="-1" role="dialog">
+                <div class="custom-timeout-modal-content">
+                    <!-- Close Button -->
+                    <button type="button" class="custom-timeout-modal-close" id="closeTimeoutModal">&times;</button>
+                    <!-- Error Icon -->
+                    <div class="custom-timeout-modal-icon">
+                        <img src="~/assets/NewLogo/PNG/cross.png" alt="Error" />
+                    </div>
+                    <!-- Title -->
+                    <h4 class="custom-timeout-modal-title">Request Time Out</h4>
+                    <!-- Body -->
+                    <p class="custom-timeout-modal-body">
+                        We sent a push notification to your UAEID mobile app,
+                        but we didn't get a response.
+                        Please check your internet connection in mobile and click on the 'Resend notification' button to resend notification.
+                    </p>
+                    <!-- Footer Buttons -->
+                    <div class="custom-timeout-modal-footer">
+                        <button type="button" class="custom-timeout-btn-alt" id="tryAnotherWay">Try Another Way</button>
+                        <button type="button" class="custom-timeout-btn-main" id="retryRequest">Resend Notification</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Responsive Wrong Credential Modal (hidden by default) -->
+            <div class="wrong-credential-modal" id="wrongCredentialModal" tabindex="-1" role="dialog">
+                <div class="wrong-credential-modal-content">
+                    <!-- Close Button -->
+                    <button type="button" class="wrong-credential-modal-close" id="wrongCredentialCloseTimeoutModal">&times;</button>
+                    <!-- Error Icon -->
+                    <div class="wrong-credential-modal-icon">
+                        <img src="~/assets/NewLogo/PNG/cross.png" alt="Error" />
+                    </div>
+                    <!-- Title -->
+                    <h4 class="wrong-credential-modal-title">The selected Code or PIN you have entered is incorrect.</h4>
+                    <!-- Body -->
+                    <p class="wrong-credential-modal-body">
+                        The selected Code or PIN you have entered is incorrect.
+                        Do you want to reauthenticate?
+                        Please click on the 'Resend notification' button to resend notification.
+                    </p>
+                    <!-- Footer Buttons -->
+                    <div class="wrong-credential-modal-footer">
+                        <button type="button" class="wrong-credential-btn-alt" id="wrongCredentialTryAnotherWay">Try Another Way</button>
+                        <button type="button" class="wrong-credential-btn-main" id="wrongCredentialRetryRequest">Resend Notification</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div id="dataId" data-method='@Model.Method' data-target='@Model.Target' hidden></div>
+    </div>
+    <div class="row Pagefooter">
+        <!--<img src="~/assets/NewLogo/SVG/DtLogo.svg" />-->
+    </div>
+</section>
+
+
+@section Scripts {
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+
+
+    <script type="text/javascript">
+        var method = "@Model.Method";
+        var target = "@Model.Target";
+        window.authSchemas = @Html.Raw(JsonSerializer.Serialize(Model.AuthSchemas));
+        //window.authSchemas = @Html.Raw(Json.Serialize(Model.AuthSchemas));
+
+
+
+    </script>
+
+    @*<script src="/global_assets/js/main/jquery.min.js" asp-append-version="true"></script>*@
+
+    <script src="~/lib/loginJsCss/helpers.js"></script>
+    <script src="~/lib/loginJsCss/face-api.min.js"></script>
+    <script src="~/lib/loginJsCss/passwordless.login.js"></script>
+    <script src="~/lib/loginJsCss/login.js"></script>
+
+}
