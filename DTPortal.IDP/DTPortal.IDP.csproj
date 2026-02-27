@@ -46,6 +46,7 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
     <PackageReference Include="QRCoder" Version="1.6.0" />
     <PackageReference Include="Request.Body.Peeker" Version="1.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.4" />
     <PackageReference Include="VaultSharp" Version="1.17.5.1" />
   </ItemGroup>
   <ItemGroup>

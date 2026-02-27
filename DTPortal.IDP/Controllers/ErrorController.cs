@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DTPortal.IDP.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class ErrorController : Controller
     {
         private readonly ILogger<ErrorController> _logger;

@@ -12,6 +12,7 @@ using DTPortal.Core.Domain.Services.Communication;
 
 namespace DTPortal.IDP.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Route("api/[controller]")]
     [ApiController]
     public class JwksController : Controller

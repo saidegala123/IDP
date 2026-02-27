@@ -36,6 +36,7 @@ using APIResponse = DTPortal.Core.Domain.Services.Communication.APIResponse;
 
 namespace DTPortal.IDP.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class LoginController : Controller
     {
         private readonly DTPortal.Core.Domain.Services.IAuthenticationService

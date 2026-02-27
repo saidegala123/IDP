@@ -48,6 +48,9 @@ try
     if (securityConfig?.UseKestrelSettings == true)
         DTPortal.IDP.Extensions.WebHostExtensions.ConfigureKestrel(builder.WebHost, securityConfig, logger);
 
+
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
     await ConfigureServices(builder);
 
     //builder.Configuration.AddIniFile($"settings.{builder.Environment.EnvironmentName}", true, false);
@@ -55,6 +58,8 @@ try
     builder.Logging.ClearProviders();
     builder.Logging.AddConsole();
     builder.Logging.AddNLogWeb();
+
+
 
     //builder.WebHost.ConfigureKestrel(serverOptions =>
     //{
@@ -95,6 +100,9 @@ try
     app.UseStaticFiles();
 
     app.UseRouting();
+
+    app.UseSwagger();
+    app.UseSwaggerUI();
 
     app.UseCors();
 

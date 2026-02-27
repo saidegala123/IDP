@@ -18,6 +18,7 @@ namespace DTPortal.IDP.Controllers
 {
 
     // [CustomAuthorization]
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Route("authorization")]
     [ServiceFilter(typeof(CustomAuthorizationAttribute))]
     public class Oauth2Controller : Controller
