@@ -128,7 +128,7 @@ namespace DTPortal.IDP.Controllers
                     if (method == "get")
                     {
                         _logger.LogDebug("<--Login get : redirect to get url");
-                        return LocalRedirect(url);
+                        return Redirect(url);
                     }
                     else
                     {
@@ -317,7 +317,7 @@ namespace DTPortal.IDP.Controllers
                     if (model.Method == "get")
                     {
                         _logger.LogDebug("<-- Login post");
-                        return LocalRedirect(url);
+                        return Redirect(url);
                     }
                     else
                     {
@@ -895,7 +895,7 @@ namespace DTPortal.IDP.Controllers
                 }
 
                 _logger.LogDebug("<-- Logout");
-                return LocalRedirect(redirect_uri);
+                return Redirect(redirect_uri);
 
 
             }
@@ -942,7 +942,7 @@ namespace DTPortal.IDP.Controllers
                         }
                         _logger.LogDebug("<--OIDCLogout");
                         // Redirect to SP Logout Url
-                        return LocalRedirect(redirectUrl);
+                        return Redirect(redirectUrl);
                     }
                 }
 
@@ -1080,7 +1080,7 @@ namespace DTPortal.IDP.Controllers
                 }
                 _logger.LogDebug("<--OIDCLogout");
                 // Redirect to SP Logout Url
-                return LocalRedirect(redirectUrl);
+                return Redirect(redirectUrl);
             }
             catch (Exception e)
             {

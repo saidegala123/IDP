@@ -179,7 +179,7 @@ namespace DTPortal.IDP.Controllers
                         var url = model.redirect_uri + "?error=invalid_request_object" +
                         "&error_description=" + WEBConstants.ClientIdNotFound +
                         "&state=" + model.state;
-                        return LocalRedirect(url);
+                        return Redirect(url);
                     }
                     else
                     {
@@ -198,7 +198,7 @@ namespace DTPortal.IDP.Controllers
                         var url = model.redirect_uri + "?error=invalid_request_object" +
                         "&error_description=" + WEBConstants.ClientIdNotFound +
                         "&state=" + model.state;
-                        return LocalRedirect(url);
+                        return Redirect(url);
                     }
                     else
                     {
@@ -219,7 +219,7 @@ namespace DTPortal.IDP.Controllers
                             var url = model.redirect_uri + "?error=invalid_request_object" +
                             "&error_description= Request has missing request parameter" +
                             "&state=" + model.state;
-                            return LocalRedirect(url);
+                            return Redirect(url);
                         }
                         else
                         {
@@ -241,7 +241,7 @@ namespace DTPortal.IDP.Controllers
                             var url = model.redirect_uri + "?error=invalid_request_object&" +
                                 "error_description=" + WEBConstants.InvalidJWT +
                                  "&state=" + model.state;
-                            return LocalRedirect(url);
+                            return Redirect(url);
                         }
                         else
                         {
@@ -261,7 +261,7 @@ namespace DTPortal.IDP.Controllers
                         var url = model.redirect_uri + "?error=invalid_request&" +
                             "error_description=" + isValidParam.Message +
                              "&state=" + model.state;
-                        return LocalRedirect(url);
+                        return Redirect(url);
                     }
                     else
                     {
@@ -280,7 +280,7 @@ namespace DTPortal.IDP.Controllers
                             var url = model.redirect_uri + "?error=invalid_request_object" +
                             "&error_description= Request has missing openid scope" +
                             "&state=" + model.state;
-                            return LocalRedirect(url);
+                            return Redirect(url);
                         }
                         else
                         {
@@ -352,7 +352,7 @@ namespace DTPortal.IDP.Controllers
                         var url = model.redirect_uri + "?error=invalid_request&" +
                             "error_description=" + response.Message +
                              "&state=" + model.state;
-                        return LocalRedirect(url);
+                        return Redirect(url);
                     }
                     else
                     {
@@ -447,7 +447,7 @@ namespace DTPortal.IDP.Controllers
                             "&error_description=" + _helper.GetErrorMsg(ErrorCodes.SESSION_NOT_FOUND) +
                             "&state=" + model.state;
 
-                        return LocalRedirect(url);
+                        return Redirect(url);
                     }
                     else
                     {
@@ -490,7 +490,7 @@ namespace DTPortal.IDP.Controllers
                         var url = model.redirect_uri + "?code=" + response.AuthorizationCode +
                             "&state=" + model.state;
 
-                        return LocalRedirect(url);
+                        return Redirect(url);
                     }
                     else
                     {
@@ -510,7 +510,7 @@ namespace DTPortal.IDP.Controllers
                         {
                             var url = model.redirect_uri + "?error=Access_Denied" +
                                 "&error_description=" + WEBConstants.DeniedConsent;
-                            return LocalRedirect(url);
+                            return Redirect(url);
                         }
                         else
                         {
@@ -627,7 +627,7 @@ namespace DTPortal.IDP.Controllers
                         {
                             var url = model.redirect_uri + "?error=Access_Denied" +
                                 "&error_description=" + WEBConstants.ClientNotActive;
-                            return LocalRedirect(url);
+                            return Redirect(url);
                         }
                         else
                         {
@@ -836,7 +836,7 @@ namespace DTPortal.IDP.Controllers
                         var url = model.clientDetails.redirect_uri + "?error=Internal_Error" +
                             "&error_description=" + response.Message +
                             "&state=" + model.clientDetails.state;
-                        return LocalRedirect(url);
+                        return Redirect(url);
                     }
                     else
                     {
@@ -875,7 +875,7 @@ namespace DTPortal.IDP.Controllers
                 var url = model.clientDetails.redirect_uri + "?error=Access denied" +
                     "&error_description=" + WEBConstants.DeniedConsent + "&state="
                     + model.clientDetails.state;
-                return LocalRedirect(url);
+                return Redirect(url);
             }
             else
             {
@@ -947,7 +947,7 @@ namespace DTPortal.IDP.Controllers
                         var url = model.clientDetails.redirect_uri + "?error=Internal_Error" +
                             "&error_description=" + response.Message +
                             "&state=" + model.clientDetails.state;
-                        return LocalRedirect(url);
+                        return Redirect(url);
                     }
                     else
                     {
