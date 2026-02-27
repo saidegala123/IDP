@@ -129,7 +129,7 @@ namespace DTPortal.IDP.Controllers
                     if (method == "get")
                     {
                         _logger.LogDebug("<--Login get : redirect to get url");
-                        return Redirect(url);
+                        return LocalRedirect(url);
                     }
                     else
                     {
@@ -318,7 +318,7 @@ namespace DTPortal.IDP.Controllers
                     if (model.Method == "get")
                     {
                         _logger.LogDebug("<-- Login post");
-                        return Redirect(url);
+                        return LocalRedirect(url);
                     }
                     else
                     {
@@ -896,7 +896,7 @@ namespace DTPortal.IDP.Controllers
                 }
 
                 _logger.LogDebug("<-- Logout");
-                return Redirect(redirect_uri);
+                return LocalRedirect(redirect_uri);
 
 
             }
@@ -943,7 +943,7 @@ namespace DTPortal.IDP.Controllers
                         }
                         _logger.LogDebug("<--OIDCLogout");
                         // Redirect to SP Logout Url
-                        return Redirect(redirectUrl);
+                        return LocalRedirect(redirectUrl);
                     }
                 }
 
@@ -1081,7 +1081,7 @@ namespace DTPortal.IDP.Controllers
                 }
                 _logger.LogDebug("<--OIDCLogout");
                 // Redirect to SP Logout Url
-                return Redirect(redirectUrl);
+                return LocalRedirect(redirectUrl);
             }
             catch (Exception e)
             {
@@ -1107,25 +1107,6 @@ namespace DTPortal.IDP.Controllers
                 _logger.LogError("SendPushNotification: {0}", e.Message);
                 _logger.LogDebug("<--SendPushNotification");
                 return StatusCode(500, _helper.GetErrorMsg(ErrorCodes.LOGIN_GETERRORCONSTANT_METHOD_EXCP));
-            }
-        }
-
-        [HttpGet]
-        public IActionResult ForgotPassword(string id, int UserType)
-        {
-            try
-            {
-                _logger.LogDebug("--> ForgotPassword");
-                var ForgotPasswordUrl = string.Format(Configuration["ForgotPasswordUrl"],
-                                                    id, UserType);
-                _logger.LogDebug("<-- ForgotPassword");
-                return Redirect(ForgotPasswordUrl);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError("SendPushNotification: {0}", e.Message);
-                _logger.LogDebug("<--SendPushNotification");
-                return StatusCode(500, _helper.GetErrorMsg(ErrorCodes.LOGIN_FORGOTPASSWORD_METHOD_EXCP));
             }
         }
 

@@ -82,16 +82,6 @@ namespace DTPortal.Core.Utilities
                         adminportal_Config.remoteSigning;
                     ssoConfiguration.sso_config.allowed_domain_users =
                         adminportal_Config.allowed_domain_users;
-
-                    adminPortalClientId = configuration["DTIDP_Config:Client_id"];
-                    adminPortalClientSecret = configuration["DTIDP_Config:client_secret"];
-                    if (configuration.GetValue<bool>("EncryptionEnabled"))
-                    {
-                        adminPortalClientId = PKIMethods.Instance.
-                                PKIDecryptSecureWireData(adminPortalClientId);
-                        adminPortalClientSecret = PKIMethods.Instance.
-                                PKIDecryptSecureWireData(adminPortalClientSecret);
-                    };
                 }
 
                 idpConfiguration = _configurationService.GetConfiguration

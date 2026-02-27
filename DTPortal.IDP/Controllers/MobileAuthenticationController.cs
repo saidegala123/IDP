@@ -76,53 +76,6 @@ namespace DTPortal.IDP.Controllers
             }
         }
 
-        //[HttpGet("initiate")]
-        public async Task<IActionResult> InitiateMobileAuthentication
-            (string method, string target)
-        {
-            var decodedBytes = Convert.FromBase64String(target);
-            var decodedUrl = Encoding.UTF8.GetString(decodedBytes);
-
-            var uri = new Uri("https://dummy.com" + decodedUrl);
-            var query = QueryHelpers.ParseQuery(uri.Query);
-
-            var clientId = query["client_id"].ToString();
-            var redirectUri = query["redirect_uri"].ToString();
-            var responseType = query["response_type"].ToString();
-            var scope = query["scope"].ToString();
-            var state = query["state"].ToString();
-            var acrValues = query["acr_values"].ToString();
-
-            var request = new MobileAuthRequest
-            {
-                ClientId = clientId,
-                RedirectUri = redirectUri,
-                ResponseType = responseType,
-                Scope = scope,
-                State = state,
-                AcrValues = acrValues
-            };
-
-            var serviceResult = await _mobileAuthenticationService
-                .InitiateMobileAuthenticationAsync(request);
-
-            var sessionId = (string)serviceResult.Resource;
-
-            string baseUrl = _configuration["MobileAuthentication:BaseUrl"];
-            string successUrl = HttpUtility.UrlEncode(
-                _configuration["MobileAuthentication:SuccessUrl"]);
-            string failureUrl = HttpUtility.UrlEncode(
-                _configuration["MobileAuthentication:FailureUrl"]);
-
-            string encodedSessionId = HttpUtility.UrlEncode(sessionId);
-
-            string mobileIdUrl = $"{baseUrl}?successURL={successUrl}&failureURL={failureUrl}&sessionId={encodedSessionId}";
-
-            _logger.LogInformation("Session ID: " + sessionId);
-            _logger.LogInformation("Mobile ID URL: " + mobileIdUrl);
-
-            return Redirect(mobileIdUrl);
-        }
 
         [HttpGet("GetConsentDetails")]
         public async Task<IActionResult> GetConsentDetails
@@ -155,42 +108,6 @@ namespace DTPortal.IDP.Controllers
             });
         }
 
-        //[HttpGet("success")]
-        public async Task<IActionResult> Success(string sessionId)
-        {
-            var response = await _mobileAuthenticationService
-                .GetAuthorizationCode(sessionId);
-
-            if (!response.Success)
-            {
-                if (!string.IsNullOrEmpty(response.RedirectUri))
-                {
-                    var url = response.RedirectUri + "?error=" + response.Message +
-                        "&error_description=" + response.Message;
-
-                    return Redirect(url);
-                }
-                else
-                {
-                    ViewBag.error = "invalid_request";
-                    ViewBag.error_description = "Redirect Url Missing";
-                    return View("GetCodeError");
-                }
-            }
-            if (!string.IsNullOrEmpty(response.RedirectUri))
-            {
-                var url = response.RedirectUri + "?code=" + response.AuthorizationCode +
-                    "&state=" + response.State;
-
-                return Redirect(url);
-            }
-            else
-            {
-                ViewBag.error = "invalid_request";
-                ViewBag.error_description = "Redirect Url Missing";
-                return View("GetCodeError");
-            }
-        }
 
         [HttpPost("VerifyClientDetails")]
         public async Task<IActionResult> VerifyClientDetails
@@ -544,21 +461,6 @@ namespace DTPortal.IDP.Controllers
                 Success = true,
                 Message = _messageLocalizer.GetMessage(Constants.TransactionLogsCountFetchedSuccessfully),
                 Result = result.Resource
-            });
-        }
-
-        //[HttpPost("SaveConsent")]
-        public async Task<IActionResult> SaveConsent
-            (SaveConsentRequest request)
-        {
-            var response = await _mobileAuthenticationService
-                .SaveUserScopesAsync(request, request.sessionId);
-
-            return Ok(new APIResponse()
-            {
-                Success = response.Success,
-                Message = response.Message,
-                Result = response.Resource
             });
         }
     }

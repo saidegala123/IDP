@@ -131,7 +131,7 @@ function getqrcode() {
             },
             error: ErrorHandler,
             success: function (response) {
-                document.getElementById('appQrCode').innerHTML = response;
+                document.getElementById('appQrCode').textContent = response;
             },
             failure: function () { alert("Failure!!"); }
         });
@@ -635,10 +635,22 @@ function VerifyUser() {
                             if (isConfirm) {
                                 clearInterval(codeVerfierInterval);
                                 deleteCookies();
-                                if (redirectUrl == "")
-                                    window.location.href = LoginControllerUrl + "/Error?error=Invalid Client&error_description=" + result.message
-                                else
-                                    window.location.href = redirectUrl + "?error=Invalid Client&error_description=" + result.message + "&state=" + state
+                                //if (redirectUrl == "")
+                                //    window.location.href = LoginControllerUrl + "/Error?error=Invalid Client&error_description=" + result.message
+                                //else
+                                //    window.location.href = redirectUrl + "?error=Invalid Client&error_description=" + result.message + "&state=" + state
+                                if (!redirectUrl) {
+                                    const errorUrl = new URL("/Error", LoginControllerUrl);
+                                    errorUrl.searchParams.set("error", "Invalid Client");
+                                    errorUrl.searchParams.set("error_description", result.message);
+                                    window.location.href = errorUrl.href;
+                                } else {
+                                    const url = new URL(redirectUrl);
+                                    errorUrl.searchParams.set("error", "Invalid Client");
+                                    errorUrl.searchParams.set("error_description", result.message);
+                                    url.searchParams.set("state", state || "");
+                                    window.location.href = url.href;
+                                }
                             }
                         });
                     }
@@ -647,10 +659,22 @@ function VerifyUser() {
                             if (isConfirm) {
                                 clearInterval(codeVerfierInterval);
                                 deleteCookies();
-                                if (redirectUrl == "")
-                                    window.location.href = LoginControllerUrl + "/Error?error=Inactive Client&error_description=" + result.message
-                                else
-                                    window.location.href = redirectUrl + "?error=Inactive Client&error_description=" + result.message + "&state=" + state
+                                //if (redirectUrl == "")
+                                //    window.location.href = LoginControllerUrl + "/Error?error=Inactive Client&error_description=" + result.message
+                                //else
+                                //    window.location.href = redirectUrl + "?error=Inactive Client&error_description=" + result.message + "&state=" + state
+                                if (!redirectUrl) {
+                                    const errorUrl = new URL("/Error", LoginControllerUrl);
+                                    errorUrl.searchParams.set("error", "inactive_client");
+                                    errorUrl.searchParams.set("error_description", result.message || "");
+                                    window.location.href = errorUrl.href;
+                                } else {
+                                    const url = new URL(redirectUrl);
+                                    url.searchParams.set("error", "inactive_client");
+                                    url.searchParams.set("error_description", result.message || "");
+                                    url.searchParams.set("state", state || "");
+                                    window.location.href = url.href;
+                                }
                             }
                         });
                     }
@@ -1179,18 +1203,52 @@ function sendCodeAgain() {
                         if (isConfirm) {
                             clearInterval(codeVerfierInterval);
                             deleteCookies();
-                            if (redirectUrl == "")
-                                window.location.href = LoginControllerUrl + "/Error?error=account_suspended&error_description=" + result.message
-                            else
-                                window.location.href = redirectUrl + "?error=account_suspended&error_description=" + result.message + "&state=" + state
+                            //if (redirectUrl == "")
+                            //    window.location.href = LoginControllerUrl + "/Error?error=account_suspended&error_description=" + result.message
+                            //else
+                            //    window.location.href = redirectUrl + "?error=account_suspended&error_description=" + result.message + "&state=" + state
+                            if (!redirectUrl) {
+
+                                const errorUrl = new URL("/Error", LoginControllerUrl);
+                                errorUrl.searchParams.set("error", "account_suspended");
+                                errorUrl.searchParams.set("error_description", result.message || "");
+
+                                window.location.href = errorUrl.href;
+
+                            } else {
+
+                                const url = new URL(redirectUrl);
+                                url.searchParams.set("error", "account_suspended");
+                                url.searchParams.set("error_description", result.message || "");
+                                url.searchParams.set("state", state || "");
+
+                                window.location.href = url.href;
+                            }
                         } else {
                             swal.close();
                             clearInterval(codeVerfierInterval);
                             deleteCookies();
-                            if (redirectUrl == "")
-                                window.location.href = LoginControllerUrl + "/Error?error=account_suspended&error_description=" + result.message
-                            else
-                                window.location.href = redirectUrl + "?error=account_suspended&error_description=" + result.message + "&state=" + state
+                            //if (redirectUrl == "")
+                            //    window.location.href = LoginControllerUrl + "/Error?error=account_suspended&error_description=" + result.message
+                            //else
+                            //    window.location.href = redirectUrl + "?error=account_suspended&error_description=" + result.message + "&state=" + state
+                            if (!redirectUrl) {
+
+                                const errorUrl = new URL("/Error", LoginControllerUrl);
+                                errorUrl.searchParams.set("error", "account_suspended");
+                                errorUrl.searchParams.set("error_description", result.message || "");
+
+                                window.location.href = errorUrl.href;
+
+                            } else {
+
+                                const url = new URL(redirectUrl);
+                                url.searchParams.set("error", "account_suspended");
+                                url.searchParams.set("error_description", result.message || "");
+                                url.searchParams.set("state", state || "");
+
+                                window.location.href = url.href;
+                            }
                         }
                     });
                 }
@@ -1212,10 +1270,28 @@ function sendCodeAgain() {
                             clearInterval(codeVerfierInterval);
 
                             deleteCookies();
-                            if (redirectUrl == "")
-                                window.location.href = LoginControllerUrl + "/Error?error=access_denied&error_description=user not authenticated"
-                            else
-                                window.location.href = redirectUrl + "?error=access_denied&error_description=user not authenticated&state=" + state
+                            //if (redirectUrl == "")
+                            //    window.location.href = LoginControllerUrl + "/Error?error=access_denied&error_description=user not authenticated"
+                            //else
+                            //    window.location.href = redirectUrl + "?error=access_denied&error_description=user not authenticated&state=" + state
+
+                            if (!redirectUrl) {
+
+                                const errorUrl = new URL("/Error", LoginControllerUrl);
+                                errorUrl.searchParams.set("error", "access_denied");
+                                errorUrl.searchParams.set("error_description", "user not authenticated");
+
+                                window.location.href = errorUrl.href;
+
+                            } else {
+
+                                const url = new URL(redirectUrl);
+                                url.searchParams.set("error", "access_denied");
+                                url.searchParams.set("error_description", "user not authenticated");
+                                url.searchParams.set("state", state || "");
+
+                                window.location.href = url.href;
+                            }
                         }
                     });
                 }
@@ -1265,10 +1341,28 @@ function generateQrCodeAgain() {
                         }
                         else {
                             deleteCookies();
-                            if (redirectUrl == "")
-                                window.location.href = LoginControllerUrl + "/Error?error=access_denied&error_description=user not authenticated"
-                            else
-                                window.location.href = redirectUrl + "?error=access_denied&error_description=user not authenticated&state=" + state
+                            //if (redirectUrl == "")
+                            //    window.location.href = LoginControllerUrl + "/Error?error=access_denied&error_description=user not authenticated"
+                            //else
+                            //    window.location.href = redirectUrl + "?error=access_denied&error_description=user not authenticated&state=" + state
+
+                            if (!redirectUrl) {
+
+                                const errorUrl = new URL("/Error", LoginControllerUrl);
+                                errorUrl.searchParams.set("error", "access_denied");
+                                errorUrl.searchParams.set("error_description", "user not authenticated");
+
+                                window.location.href = errorUrl.href;
+
+                            } else {
+
+                                const url = new URL(redirectUrl);
+                                url.searchParams.set("error", "access_denied");
+                                url.searchParams.set("error_description", "user not authenticated");
+                                url.searchParams.set("state", state || "");
+
+                                window.location.href = url.href;
+                            }
                         }
                     }
                 );
@@ -1292,7 +1386,7 @@ function ErrorHandler(xhr, status, error) {
         case 400:
             document.getElementById(errorDivId).className = "danger";
             document.getElementById(errorDivId).style.visibility = "visible"
-            document.getElementById(errorDivId).innerHTML = xhr.responseJSON.message
+            document.getElementById(errorDivId).textContent = xhr.responseJSON.message
             break;
         case 403:
             swal("Forbidden", "You do not have access to this resource", "error");
