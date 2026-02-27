@@ -150,13 +150,6 @@ namespace DTPortal.Core.Utilities
                 return jwtToken;
             }
 
-            if (false == ssoConfig.sso_config.remoteSigning)
-            {
-                // For Testing Only
-                jwtToken = GenerateJWTTokenLocal((SubIdToken)payloadObj);
-                return jwtToken;
-            }
-
             // Convert payload object to string
             var payload = JsonConvert.SerializeObject(payloadObj);
             if (payload == null)
@@ -384,99 +377,6 @@ namespace DTPortal.Core.Utilities
             }
 
             _logger.LogDebug("-->GetJSONWebTokenClaims");
-            return result;
-        }
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        public string GenerateJWTTokenLocal(SubIdToken claims)
-        {
-            _logger.LogDebug("-->GenerateJWTTokenLocal");
-
-            // Local variable declaration
-            string result = null;
-
-            // Validate input parameters
-            if (null == claims)
-            {
-                _logger.LogError("Invalid input parameter");
-                return result;
-            }
-
-            try
-            {
-                byte[] privateKeyRaw = { };
-                var privateKeyPem = System.IO.File.ReadAllText(@"privatekey.pem");
-                privateKeyPem = privateKeyPem.Replace
-                    ("-----BEGIN PRIVATE KEY-----", "");
-                privateKeyPem = privateKeyPem.Replace
-                    ("-----END PRIVATE KEY-----", "");
-                privateKeyRaw = Convert.FromBase64String(privateKeyPem);
-
-                RSACryptoServiceProvider provider = new RSACryptoServiceProvider();
-                provider.ImportPkcs8PrivateKey
-                    (new ReadOnlySpan<byte>(privateKeyRaw), out _);
-                RsaSecurityKey rsaSecurityKey = new RsaSecurityKey(provider);
-
-                var now = DateTime.Now;
-                var unixTimeSeconds = new DateTimeOffset(now).ToUnixTimeSeconds();
-
-                var userClaims = new List<Claim>();
-                userClaims.Add(new Claim(JwtRegisteredClaimNames.Iss, claims.iss));
-                userClaims.Add(new Claim(JwtRegisteredClaimNames.Aud, claims.aud));
-
-                userClaims.Add(new Claim(JwtRegisteredClaimNames.Iat,
-                    unixTimeSeconds.ToString()));
-                userClaims.Add(new Claim(JwtRegisteredClaimNames.Jti,
-                    Guid.NewGuid().ToString()));
-                userClaims.Add(new Claim(JwtRegisteredClaimNames.Sub,
-                    claims.sub));
-                userClaims.Add(new Claim(JwtRegisteredClaimNames.AuthTime,
-                    claims.auth_time.ToString()));
-                userClaims.Add(new Claim(JwtRegisteredClaimNames.AtHash,
-                    claims.at_hash));
-                userClaims.Add(new Claim(JwtRegisteredClaimNames.Nonce,
-                    claims.nonce));
-
-                var daes_claims = JsonConvert.SerializeObject(claims.daes_claims);
-                userClaims.Add(new Claim("daes_claims", daes_claims));
-
-                /*
-                userClaims.Add(new Claim("name",
-                    claims.daes_claims.name));
-                if(null != claims.daes_claims.email)
-                    userClaims.Add(new Claim(JwtRegisteredClaimNames.Email,
-                        claims.daes_claims.email));
-                if(null != claims.daes_claims.phone)
-                    userClaims.Add(new Claim("phone", claims.daes_claims.phone));
-                userClaims.Add(new Claim("gender", claims.daes_claims.gender));
-                if (null != claims.daes_claims.loa)
-                    userClaims.Add(new Claim("loa", claims.daes_claims.loa));
-                if (null != claims.daes_claims.id_document_number)
-                    userClaims.Add(new Claim("daes_id_document_number",
-                        claims.daes_claims.id_document_number));
-                if (null != claims.daes_claims.id_document_type)
-                    userClaims.Add(new Claim("daes_id_document_type",
-                        claims.daes_claims.id_document_type));
-                if (null != claims.daes_claims.country)
-                    userClaims.Add(new Claim("country",
-                        claims.daes_claims.country));
-                */
-                var jwt = new JwtSecurityToken(
-                    claims: userClaims.AsEnumerable(),
-                    notBefore: now,
-                    expires: now.AddMinutes(30),
-                    signingCredentials: new SigningCredentials(rsaSecurityKey,
-                    SecurityAlgorithms.RsaSha256)
-                );
-
-                result = new JwtSecurityTokenHandler().WriteToken(jwt);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("GenerateJWTTokenLocal failed: {0}", ex.Message);
-                return null;
-            }
-
-            _logger.LogDebug("<--GenerateJWTTokenLocal");
             return result;
         }
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

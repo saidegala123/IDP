@@ -496,7 +496,7 @@ namespace DTPortal.Core.Services
                     image1 = authData,
                     image2 = SubcriberFace
                 };
-                client.DefaultRequestHeaders.Add("Authorization", "Basic YWRtaW46SzlyemdyNDd3eg==");
+
                 var url = _configuration["FaceVerifyUrl"];
                 string json = JsonConvert.SerializeObject(faceDTO);
 

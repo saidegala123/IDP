@@ -499,10 +499,7 @@ namespace DTPortal.Core.Services
                 };
 
                 var client = _httpClientFactory.CreateClient();
-                client.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue("Basic", "YWRtaW46SzlyemdyNDd3eg==");
 
-                //client.DefaultRequestHeaders.Add("Authorization", "Basic YWRtaW46SzlyemdyNDd3eg==");
                 var url = configuration["FaceVerifyUrl"];
                 string json = JsonConvert.SerializeObject(faceDTO);
 
