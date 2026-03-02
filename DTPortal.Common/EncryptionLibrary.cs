@@ -7,13 +7,9 @@ using System.Security.Cryptography;
 using System.Text;
 
 namespace DTPortal.Common
-
 {
-
     public partial class EncryptionLibrary
-
     {
-
         private const int NonceSize = 12;
 
         private const int TagSize = 16;
@@ -23,9 +19,7 @@ namespace DTPortal.Common
         private const int Iterations = 100000;
 
         public static string EncryptText(string input, string encryptionPassword, string passwordSalt)
-
         {
-
             if (string.IsNullOrEmpty(input)) return input;
 
             byte[] passwordBytes = Encoding.UTF8.GetBytes(encryptionPassword);
