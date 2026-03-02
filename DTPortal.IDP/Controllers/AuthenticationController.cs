@@ -321,7 +321,7 @@ namespace DTPortal.IDP.Controllers
         [HttpPost]
         public async Task<IActionResult> CheckandUpdateSubscriber(string id)
         {
-            if (string.IsNullOrWhiteSpace(orgId))
+            if (string.IsNullOrWhiteSpace(id))
                 return BadRequest("Subscriber Id is required.");
 
             var result = await _subscriberService.CheckandUpdateSubscriber(id);

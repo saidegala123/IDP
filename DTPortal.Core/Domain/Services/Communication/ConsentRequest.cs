@@ -78,9 +78,7 @@ namespace DTPortal.Core.Domain.Services.Communication
 
         [StringLength(200)]
         public string DisplayName { get; set; } = string.Empty;
-
         [Required]
-        [MinLength(1, ErrorMessage = "At least one attribute must be selected.")]
         public List<ClaimsDetail> Attributes { get; set; } = new();
     }
 
