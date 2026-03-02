@@ -732,14 +732,6 @@
           "Humanizer.Core": "[2.14.1]"
         }
       },
-      "iTextSharp": {
-        "type": "Transitive",
-        "resolved": "5.5.13.4",
-        "contentHash": "/cvCNv8AJ+XuD99u4NfHSSxkBJKTdvP36wcfQF9V1Cjzi1ycyFSa4vJ64a3DhFVUTKVO60WF8OmAqngQDTHgYA==",
-        "dependencies": {
-          "BouncyCastle.Cryptography": "2.4.0"
-        }
-      },
       "librdkafka.redist": {
         "type": "Transitive",
         "resolved": "2.12.0",
@@ -1294,6 +1286,11 @@
           "Microsoft.VisualStudio.Web.CodeGeneration": "8.0.6"
         }
       },
+      "Microsoft.Win32.SystemEvents": {
+        "type": "Transitive",
+        "resolved": "8.0.0",
+        "contentHash": "9opKRyOKMCi2xJ7Bj7kxtZ1r9vbzosMvRrdEhVhDz8j8MoBGgB+WmC94yH839NPH+BclAjtQ/pyagvi/8gDLkw=="
+      },
       "MimeKit": {
         "type": "Transitive",
         "resolved": "4.7.1",
@@ -1602,6 +1599,14 @@
         "resolved": "9.0.11",
         "contentHash": "2Us/NchH6SM69NYWzf8NRyeftdv3ILso8LMiMdAjT7ECTiZKzddiXWhAyQj6ZzbddoAOHS9GdlPbAAkwCPID3Q=="
       },
+      "System.Drawing.Common": {
+        "type": "Transitive",
+        "resolved": "8.0.24",
+        "contentHash": "mdxogCndhk4MCkHRHZnUOXOA6ImBzTSdETeponzvnYciV1lEipw+eKWutk6vxvkTKu5GA4m4YGK+NUEWd1isEA==",
+        "dependencies": {
+          "Microsoft.Win32.SystemEvents": "8.0.0"
+        }
+      },
       "System.Formats.Asn1": {
         "type": "Transitive",
         "resolved": "8.0.1",
@@ -1735,8 +1740,8 @@
           "Pomelo.EntityFrameworkCore.MySql": "[9.0.0, )",
           "RabbitMQ.Client": "[6.2.4, )",
           "StackExchange.Redis": "[2.5.61, )",
-          "VaultSharp": "[1.17.5.1, )",
-          "iTextSharp": "[5.5.13.4, )"
+          "System.Drawing.Common": "[8.0.24, )",
+          "VaultSharp": "[1.17.5.1, )"
         }
       }
     }

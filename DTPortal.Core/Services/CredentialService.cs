@@ -9,7 +9,6 @@ using DTPortal.Core.Enums;
 using DTPortal.Core.Exceptions;
 using DTPortal.Core.Utilities;
 using Google.Apis.Auth.OAuth2;
-using iTextSharp.text.pdf;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -33,7 +32,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
-using static iTextSharp.text.pdf.AcroFields;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Attribute = DTPortal.Core.DTOs.Attribute;
 

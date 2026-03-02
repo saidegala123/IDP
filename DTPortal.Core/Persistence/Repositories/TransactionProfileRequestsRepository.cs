@@ -1,6 +1,5 @@
 ﻿using DTPortal.Core.Domain.Models;
 using DTPortal.Core.Domain.Repositories;
-using iTextSharp.text.pdf;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;

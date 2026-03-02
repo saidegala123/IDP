@@ -7,7 +7,6 @@ using DTPortal.Core.DTOs;
 using DTPortal.Core.Exceptions;
 using DTPortal.Core.Utilities;
 using Google.Apis.Logging;
-using iTextSharp.text;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using NLog.Targets.Wrappers;
@@ -18,7 +17,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using static iTextSharp.text.pdf.AcroFields;
 
 namespace DTPortal.Core.Services
 {

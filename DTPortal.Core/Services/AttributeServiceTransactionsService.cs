@@ -18,7 +18,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 using Org.BouncyCastle.Asn1.Ocsp;
-using iTextSharp.text.pdf.parser;
 
 namespace DTPortal.Core.Services
 {

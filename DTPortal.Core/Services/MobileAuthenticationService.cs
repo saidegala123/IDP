@@ -11,7 +11,6 @@ using DTPortal.Core.Exceptions;
 using DTPortal.Core.Utilities;
 using Fido2NetLib;
 using Google.Apis.Services;
-using iTextSharp.text.pdf;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

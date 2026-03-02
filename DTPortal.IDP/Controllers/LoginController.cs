@@ -7,7 +7,6 @@ using DTPortal.IDP.ViewModel;
 using DTPortal.IDP.ViewModel.Login;
 using DTPortal.IDP.ViewModel.Oauth2;
 using Fido2NetLib;
-using iTextSharp.text.pdf.qrcode;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Cors;

@@ -3,7 +3,6 @@ using DTPortal.Core.Domain.Services;
 using DTPortal.Core.Domain.Services.Communication;
 using DTPortal.Core.DTOs;
 using DTPortal.Core.Utilities;
-using iTextSharp.text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
