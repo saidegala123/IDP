@@ -501,49 +501,47 @@ function authenticateUserAfterKYC() {
 }
 
 function ValidateNumber(userName) {
-    if (userName.startsWith("+256")) {
-        if (userName.length != 13) {
-            return null;
-        }
-    } else if (userName.startsWith("256")) {
-        if (userName.length != 12) {
-            return null;
-        }
-        userName = "+" + userName;
 
-    } else if (userName.startsWith("+91")) {
-        if (userName.length != 13) {
-            return null;
-        }
+    if (userName.startsWith("+91")) {
+        if (userName.length !== 13) return null;
     }
     else if (userName.startsWith("91")) {
-        if (userName.length != 12) {
-            return null;
-        }
+        if (userName.length !== 12) return null;
         userName = "+" + userName;
     }
+
+    else if (userName.startsWith("+971")) {
+        if (userName.length !== 13) return null;
+    }
+    else if (userName.startsWith("971")) {
+        if (userName.length !== 12) return null;
+        userName = "+" + userName;
+    }
+
     else if (userName.startsWith("0")) {
-        if (userName.length == 10) {
-            userName = userName.replace("0", "+256");
+
+        if (userName.length === 10) {
+            userName = userName.replace(/^0/, "+971");
         }
-        else if (userName.length == 11) {
-            userName = userName.replace("0", "+91");
-        } else {
+        else if (userName.length === 11) {
+            userName = userName.replace(/^0/, "+91");
+        }
+        else {
             return null;
         }
     }
-    else if (userName.length == 9) {
-        userName = "+256" + userName;
-    }
 
-    else if (userName.length == 10) {
+    else if (userName.length === 9) {
+        userName = "+971" + userName;
+    }
+    else if (userName.length === 10) {
         userName = "+91" + userName;
     }
     else {
-        return null
+        return null;
     }
 
-    return userName
+    return userName;
 }
 
 function VerifyUser() {

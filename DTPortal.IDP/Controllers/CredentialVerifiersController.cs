@@ -113,6 +113,9 @@ namespace DTPortal.Web.Controllers
         public async Task<IActionResult> GetCredentialVerifiersListByOrganizationId
             (string orgId)
         {
+            if (string.IsNullOrWhiteSpace(orgId))
+                return BadRequest("Organization Id is required.");
+
             var response = await _credentialVerifiersService.
                 GetCredentialVerifiersListByOrganizationIdAsync(orgId);
             var result = new APIResponse()
@@ -130,6 +133,10 @@ namespace DTPortal.Web.Controllers
             (string orgId)
         {
             var authHeader = Request.Headers[Configuration["AccessTokenHeaderName"]];
+
+            if (string.IsNullOrWhiteSpace(orgId))
+                return BadRequest("Organization Id is required.");
+
             if (string.IsNullOrEmpty(authHeader))
             {
                 ErrorResponseDTO errResponse = new ErrorResponseDTO();
@@ -221,6 +228,9 @@ namespace DTPortal.Web.Controllers
         public async Task<IActionResult> GetCredentialVerifierListByIssuerId
             (string orgId)
         {
+            if (string.IsNullOrWhiteSpace(orgId))
+                return BadRequest("Organization Id is required.");
+
             var response = await _credentialVerifiersService.
                 GetCredentialVerifierListByIssuerId(orgId);
             var result = new APIResponse()

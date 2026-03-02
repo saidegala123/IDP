@@ -74,38 +74,6 @@ namespace DTPortal.IDP.Controllers
 
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // Endpoint for ValidateSession
-        [Route("ValidateSession/{GlobalSessionId}")]
-        [HttpGet]
-        public async Task<IActionResult> ValidateSession(string GlobalSessionId)
-        {
-            _logger.LogDebug("--->ValidateSession");
-
-            var result = await _authenticationService.ValidateSession(GlobalSessionId);
-
-            if (!result.Success)
-            {
-                // Failure
-                var response = new ResponseDTO
-                {
-                    Success = result.Success,
-                    Message = result.Message
-                };
-                return Ok(response);
-            }
-            else
-            {
-                // Success
-                var response = new ResponseDTO
-                {
-                    Success = result.Success,
-                    Message = result.Message
-                };
-
-                return Ok(response);
-            }
-
-        }
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         [Route("VerifyUserAuthData")]
         [HttpPost]
         public async Task<IActionResult> VerifyUserAuthData
@@ -353,6 +321,9 @@ namespace DTPortal.IDP.Controllers
         [HttpPost]
         public async Task<IActionResult> CheckandUpdateSubscriber(string id)
         {
+            if (string.IsNullOrWhiteSpace(orgId))
+                return BadRequest("Subscriber Id is required.");
+
             var result = await _subscriberService.CheckandUpdateSubscriber(id);
 
             var response = new ResponseDTO
@@ -363,35 +334,7 @@ namespace DTPortal.IDP.Controllers
 
             return Ok(response);
         }
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        [Route("ClientConfiguration/{clientId}")]
-        [HttpGet]
-        public async Task<IActionResult> GetClientConfiguration(string clientId)
-        {
-            var result = await _clientService.GetSaml2Config(clientId);
-
-            if (null == result)
-            {
-                // Failure
-                var response = new ResponseDTO
-                {
-                    Success = false,
-                    Message = "no client found with the clientd id"
-                };
-                return Ok(response);
-            }
-            else
-            {
-                var response = new ResponseDTO
-                {
-                    Success = true,
-                    Message = string.Empty,
-                    Result = result
-                };
-                return Ok(response);
-            }
-        }
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         [Route("VerifyUserAuthNData")]
@@ -426,25 +369,7 @@ namespace DTPortal.IDP.Controllers
 
             return Ok(result);
         }
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        [Route("VerifyAgentConsent")]
-        [HttpPost]
-        public async Task<IActionResult> VerifyAgentConsent(
-            VerifyAgentConsentRequest request)
-        {
-            var result = await _authenticationService.VerifyAgentConsent(request);
-            if (null == result)
-            {
-                _logger.LogError("VerifyUserAuthenticationData Failed");
-                var response = new APIResponse();
-                response.Success = false;
-                response.Message = "Internal Server Error";
-                return Ok(response);
-            }
-
-            return Ok(result);
-        }
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         [Route("GetJourneyToken")]
