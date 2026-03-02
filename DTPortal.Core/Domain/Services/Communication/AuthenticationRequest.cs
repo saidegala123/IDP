@@ -253,7 +253,7 @@ namespace DTPortal.Core.Domain.Services.Communication
         public string code_verifier { get; set; } = string.Empty;
 
         [StringLength(100)]
-        public string client_assertion_type { get; set; } = string.Empty;
+        public string client_assertion_type { get; set; }
 
         [StringLength(5000)]
         public string client_assertion { get; set; } = string.Empty;
