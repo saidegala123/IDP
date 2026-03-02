@@ -329,6 +329,7 @@ async Task ConfigureServices(WebApplicationBuilder builder)
     builder.Services.AddScoped<ISDKAuthenticationService, SDKAuthenticationService>();
     builder.Services.AddScoped<IMobileAuthenticationService, MobileAuthenticationService>();
     builder.Services.AddScoped<ICredentialService, CredentialService>();
+    builder.Services.AddScoped<ICredentialVerifiersService, CredentialVerifiersService>();
     builder.Services.AddScoped<IOrganizationService, DTPortal.Core.Services.OrganizationService>();
     builder.Services.AddScoped<ISelfServiceConfigurationService, SelfServiceConfigurationService>();
     builder.Services.AddScoped<IWalletConfigurationService, WalletConfigurationService>();
